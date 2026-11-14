@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                      */
+/* ------------------------------------------------------------------ */
+@theme {
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+
+  --color-ink: #14151d;
+  --color-ink-2: #1b1c26;
+  --color-ink-3: #262733;
+  --color-ivory: #eeebe4;
+  --color-ivory-2: #e4e0d6;
+  --color-ivory-3: #d6d1c4;
+  --color-charcoal: #1a1b22;
+  --color-muted: #66655f;
+  --color-mist: #9b9da8;
+  --color-accent: #4aa39b;
+  --color-accent-deep: #2b7a73;
+  --color-accent-soft: #8fd0c8;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-menu: cubic-bezier(0.6, 0.14, 0, 1);
+
+  --animate-marquee: marquee 70s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 90s linear infinite;
+  --animate-scroll-line: scroll-line 2.4s var(--ease-out-quint) infinite;
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes scroll-line {
+    0% { transform: scaleY(0); transform-origin: top; }
+    45% { transform: scaleY(1); transform-origin: top; }
+    55% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(74 163 155 / 0.55); }
+    50% { box-shadow: 0 0 0 8px rgb(74 163 155 / 0); }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-ink);
+    color: var(--color-charcoal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Typography scale (editorial serif display + clean grotesk body)    */
+/* ------------------------------------------------------------------ */
+@utility display-xl {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(3.3rem, 8.2vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+@utility display-lg {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.9rem, 7vw, 7rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+}
+@utility display-md {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 4.6vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+}
+@utility display-sm {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Page gutter + max width */
+@utility container-x {
+  width: 100%;
+  max-width: 96rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* Rounded "sheet" transition between sections */
+@utility sheet {
+  position: relative;
+  border-top-left-radius: clamp(1.5rem, 3vw, 3rem);
+  border-top-right-radius: clamp(1.5rem, 3vw, 3rem);
+  margin-top: calc(clamp(1.5rem, 3vw, 3rem) * -1);
+}
+
+/* Subtle film grain for depth on dark surfaces */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Hide scrollbar utility for horizontal scrollers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Marquee pauses on hover/focus */
+.marquee-track:hover .marquee-inner,
+.marquee-track:focus-within .marquee-inner {
+  animation-play-state: paused;
+}
+
+/* Illustration line-draw hover (expertise cards) */
+.illus path,
+.illus rect,
+.illus circle,
+.illus line,
+.illus polyline {
+  transition:
+    transform 0.8s var(--ease-out-quint),
+    stroke-dashoffset 0.9s var(--ease-out-quint),
+    opacity 0.5s ease;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-inner {
+    animation: none !important;
+  }
+}
