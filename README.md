@@ -12,7 +12,7 @@
 
 ## Interactive Preview
 
-<!-- Videoyu GitHub'a yükledikten sonra buraya otomatik oynayan video linki gelecek -->
+https://github.com/user-attachments/assets/310de1ff-815b-48a3-8884-4c7119d37f78
 
 ---
 
